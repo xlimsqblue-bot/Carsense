@@ -11,7 +11,7 @@ define('DB_HOST', getenv('PS_DB_HOST') ?: 'aws-0-ap-northeast-1.pooler.supabase.
 define('DB_PORT', getenv('PS_DB_PORT') ?: '5432');         // session pooler; do not use 6543
 define('DB_NAME', getenv('PS_DB_NAME') ?: 'postgres');
 define('DB_USER', getenv('PS_DB_USER') ?: 'postgres.nqxtbkfrorlhdrrzctxu');
-defined('DB_PASS') || define('DB_PASS', getenv('PS_DB_PASS') ?: '');
+defined('DB_PASS') || define('DB_PASS', getenv('021203060601$ean8054S') ?: '');
 
 // ---- App ----
 const APP_NAME     = 'ParkSense';
