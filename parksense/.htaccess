@@ -1,0 +1,6 @@
+Options -Indexes
+<FilesMatch "(^\.|\.(sql|md|log|ini|sh|bak|env)$)">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+</FilesMatch>

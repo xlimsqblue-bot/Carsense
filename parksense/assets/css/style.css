@@ -1,0 +1,26 @@
+:root{--bg:#e6e4df;--panel:#f3f2ee;--ink:#1d2330;--mute:#5d6472;--edge:#c9c6be;--sign:#0b5ea8;--bad:#b3341f;--warn:#e0ae1c}
+@media (prefers-color-scheme:dark){:root{--bg:#171a21;--panel:#20242d;--ink:#eceef2;--mute:#9aa1af;--edge:#343946;--sign:#4b9be0;--bad:#ff8a75}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+:focus-visible{outline:3px solid var(--sign);outline-offset:2px}
+h1{margin:0 0 4px;font-size:28px;letter-spacing:.01em}
+.topbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 22px;padding:10px 20px;background:var(--sign);color:#fff}
+.brand{color:#fff;font-weight:700;font-size:22px;text-decoration:none}
+.topbar nav{display:flex;flex-wrap:wrap;gap:4px}
+.topbar nav a,.topbar nav .soon{padding:5px 12px;border-radius:4px;color:#fff;text-decoration:none;font-weight:600}
+.topbar nav a[aria-current=page]{background:#fff;color:#0b5ea8}
+.topbar nav .soon{opacity:.6;cursor:not-allowed}
+.who{margin-left:auto;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.role{padding:2px 10px;border-radius:999px;font-size:13px;font-weight:700;background:#fff;color:#0b5ea8}
+.role-admin{background:var(--warn);color:#1d2330}
+.who form{margin:0}
+.btn-out{background:transparent;color:#fff;border:2px solid #ffffff99;border-radius:999px;padding:2px 14px;font:inherit;font-weight:600;cursor:pointer}
+.btn-out:hover{background:#ffffff22}
+.stub{max-width:720px;margin:40px auto;padding:0 20px}
+.login{max-width:380px;margin:9vh auto;background:var(--panel);padding:26px;border-radius:8px;border-top:6px solid var(--sign)}
+.sub{margin:0 0 8px;color:var(--mute)}
+.login label{display:block;margin:14px 0 4px;font-weight:600}
+.login input{width:100%;padding:10px;border:2px solid var(--edge);border-radius:4px;background:var(--bg);color:var(--ink);font:inherit}
+.btn{width:100%;margin-top:14px;padding:10px;border:0;border-radius:4px;background:var(--ink);color:var(--bg);font:inherit;font-weight:700;cursor:pointer}
+.err{min-height:24px;margin:8px 0 0;color:var(--bad);font-weight:600}
+.note{margin:8px 0;padding:8px 12px;border-left:4px solid var(--sign);background:var(--bg)}
