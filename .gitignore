@@ -1,0 +1,4 @@
+# Secrets: database password
+parksense/includes/config.local.php
+.env
+*.log

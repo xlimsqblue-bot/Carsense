@@ -1,28 +1,29 @@
--- ParkSense: run once in phpMyAdmin (Import) or the mysql client.
-CREATE DATABASE IF NOT EXISTS parksense CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE parksense;
+-- ParkSense (Supabase / PostgreSQL): run once in the Supabase dashboard -> SQL Editor -> New query.
 
-CREATE TABLE IF NOT EXISTS users (
-  id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS public.users (
+  id            BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   username      VARCHAR(50)  NOT NULL UNIQUE,
   full_name     VARCHAR(100) NOT NULL,
-  password_hash VARCHAR(255) NOT NULL,                 -- bcrypt hash, never the password
-  role          ENUM('admin','guard') NOT NULL DEFAULT 'guard',
-  is_active     TINYINT(1)   NOT NULL DEFAULT 1,       -- set to 0 to disable an account instantly
-  last_login_at DATETIME     NULL,
-  created_at    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
+  password_hash VARCHAR(255) NOT NULL,                  -- bcrypt hash, never the password
+  role          TEXT         NOT NULL DEFAULT 'guard' CHECK (role IN ('admin', 'guard')),
+  is_active     BOOLEAN      NOT NULL DEFAULT TRUE,     -- set to false to disable an account instantly
+  last_login_at TIMESTAMPTZ  NULL,
+  created_at    TIMESTAMPTZ  NOT NULL DEFAULT NOW()
+);
 
-CREATE TABLE IF NOT EXISTS login_attempts (
-  id           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS public.login_attempts (
+  id           BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   username     VARCHAR(50) NOT NULL,
   ip_address   VARCHAR(45) NOT NULL,
-  success      TINYINT(1)  NOT NULL,
-  attempted_at TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  INDEX idx_user (username, attempted_at),
-  INDEX idx_ip   (ip_address, attempted_at)
-) ENGINE=InnoDB;
+  success      BOOLEAN     NOT NULL,
+  attempted_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_login_attempts_user ON public.login_attempts (username, attempted_at);
+CREATE INDEX IF NOT EXISTS idx_login_attempts_ip   ON public.login_attempts (ip_address, attempted_at);
 
--- Least-privilege account for the website (change the password, then match it in includes/config.php):
--- CREATE USER 'parksense_app'@'localhost' IDENTIFIED BY 'a-long-random-password';
--- GRANT SELECT, INSERT, UPDATE, DELETE ON parksense.* TO 'parksense_app'@'localhost';
+-- Supabase publishes every table in "public" through its REST API, reachable with the anon API key.
+-- Row Level Security with no policies closes that door; the PHP site connects as the database
+-- owner, which is not affected by RLS.
+ALTER TABLE public.users          ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.login_attempts ENABLE ROW LEVEL SECURITY;
+REVOKE ALL ON public.users, public.login_attempts FROM anon, authenticated;

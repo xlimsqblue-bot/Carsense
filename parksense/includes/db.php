@@ -7,7 +7,7 @@ function db(): PDO {
     if ($pdo === null) {
         try {
             $pdo = new PDO(
-                'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
+                'pgsql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';sslmode=require',
                 DB_USER, DB_PASS,
                 [
                     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,

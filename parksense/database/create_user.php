@@ -32,6 +32,6 @@ try {
         ->execute([$username, $name, password_hash($pw, PASSWORD_DEFAULT), $role]);
     echo "Created $role account '$username'.\n";
 } catch (PDOException $e) {
-    echo ($e->getCode() === '23000') ? "That username already exists.\n" : "Database error: see the PHP error log.\n";
+    echo ($e->getCode() === '23505') ? "That username already exists.\n" : "Database error: see the PHP error log.\n";
     error_log($e->getMessage());
 }

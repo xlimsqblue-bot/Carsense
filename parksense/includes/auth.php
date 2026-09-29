@@ -12,12 +12,12 @@ function ua_hash(): string {
 
 function record_attempt(string $username, bool $ok): void {
     $st = db()->prepare('INSERT INTO login_attempts (username, ip_address, success) VALUES (?, ?, ?)');
-    $st->execute([substr($username, 0, 50), client_ip(), $ok ? 1 : 0]);
+    $st->execute([substr($username, 0, 50), client_ip(), $ok ? 'true' : 'false']);
 }
 
 function is_throttled(string $username): bool {
-    $q = 'SELECT COUNT(*) FROM login_attempts WHERE success = 0
-          AND attempted_at > (NOW() - INTERVAL ? SECOND) AND ';
+    $q = 'SELECT COUNT(*) FROM login_attempts WHERE NOT success
+          AND attempted_at > NOW() - make_interval(secs => ?) AND ';
     $st = db()->prepare($q . 'username = ?');
     $st->execute([LOCKOUT_SECONDS, substr($username, 0, 50)]);
     if ((int)$st->fetchColumn() >= MAX_USER_ATTEMPTS) return true;
@@ -38,7 +38,7 @@ function attempt_login(string $username, string $password): ?string {
     $user = false;
     if ($validShape) {
         $st = db()->prepare('SELECT id, username, full_name, password_hash, role
-                             FROM users WHERE username = ? AND is_active = 1 LIMIT 1');
+                             FROM users WHERE username = ? AND is_active LIMIT 1');
         $st->execute([$username]);
         $user = $st->fetch();
     }
@@ -55,7 +55,7 @@ function attempt_login(string $username, string $password): ?string {
             ->execute([password_hash($password, PASSWORD_DEFAULT), $user['id']]);
     }
     db()->prepare('UPDATE users SET last_login_at = NOW() WHERE id = ?')->execute([$user['id']]);
-    db()->prepare('DELETE FROM login_attempts WHERE username = ? AND success = 0')->execute([$user['username']]);
+    db()->prepare('DELETE FROM login_attempts WHERE username = ? AND NOT success')->execute([$user['username']]);
     record_attempt($username, true);
 
     session_regenerate_id(true);                 // new session ID at login (stops session fixation)
@@ -90,7 +90,7 @@ function current_user(): ?array {
         destroy_session();
         return null;
     }
-    $st = db()->prepare('SELECT id, username, full_name, role FROM users WHERE id = ? AND is_active = 1');
+    $st = db()->prepare('SELECT id, username, full_name, role FROM users WHERE id = ? AND is_active');
     $st->execute([$_SESSION['uid']]);
     $user = $st->fetch();
     if (!$user) { destroy_session(); return null; }

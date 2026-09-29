@@ -2,11 +2,16 @@
 declare(strict_types=1);
 defined('PARKSENSE') || exit('Forbidden');
 
-// ---- Database (edit these, or set the PS_DB_* environment variables) ----
-define('DB_HOST', getenv('PS_DB_HOST') ?: '127.0.0.1');
-define('DB_NAME', getenv('PS_DB_NAME') ?: 'parksense');
-define('DB_USER', getenv('PS_DB_USER') ?: 'parksense_app');
-define('DB_PASS', getenv('PS_DB_PASS') ?: '021203060601$ean8054S');
+// ---- Database: Supabase Postgres (edit these, or set the PS_DB_* environment variables) ----
+// Supabase dashboard -> Connect -> "Session pooler". Copy host and user from there.
+// The password (Database -> Settings, not the API key) lives in includes/config.local.php, which is
+// not committed. Create it from config.local.example.php, or run: php database/set_db_password.php
+if (is_file(__DIR__ . '/config.local.php')) require __DIR__ . '/config.local.php';
+define('DB_HOST', getenv('PS_DB_HOST') ?: 'aws-0-ap-northeast-1.pooler.supabase.com');
+define('DB_PORT', getenv('PS_DB_PORT') ?: '5432');         // session pooler; do not use 6543
+define('DB_NAME', getenv('PS_DB_NAME') ?: 'postgres');
+define('DB_USER', getenv('PS_DB_USER') ?: 'postgres.nqxtbkfrorlhdrrzctxu');
+defined('DB_PASS') || define('DB_PASS', getenv('PS_DB_PASS') ?: '');
 
 // ---- App ----
 const APP_NAME     = 'ParkSense';
