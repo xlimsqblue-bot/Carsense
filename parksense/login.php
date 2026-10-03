@@ -35,5 +35,6 @@ require INCLUDES . '/header.php';
     <p class="err" role="alert"><?= e($error) ?></p>
     <button type="submit" class="btn">Sign in</button>
   </form>
+  <p class="login-help"><a href="password_help.php">Forgot your password?</a></p>
 </main>
 <?php require INCLUDES . '/footer.php'; ?>

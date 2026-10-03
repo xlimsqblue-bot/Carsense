@@ -1,7 +1,8 @@
-<?php
+`<?php
 defined('PARKSENSE') || exit('Forbidden');
 $pageTitle  = $pageTitle  ?? APP_NAME;
 $topbarUser = $topbarUser ?? null;           // set on pages that show the top bar
+$currentPage = basename($_SERVER['SCRIPT_NAME'] ?? '');
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,14 +17,15 @@ $topbarUser = $topbarUser ?? null;           // set on pages that show the top b
 <header class="topbar">
   <a class="brand" href="dashboard.php"><?= e(APP_NAME) ?></a>
   <nav aria-label="Main">
-    <a href="dashboard.php" aria-current="page">Dashboard</a>
+    <a href="dashboard.php"<?= $currentPage === 'dashboard.php' ? ' aria-current="page"' : '' ?>>Dashboard</a>
     <a href="dashboard.php#monitor">Monitor</a>
     <span class="soon" title="Coming soon">Alerts</span>
     <span class="soon" title="Coming soon">Records</span>
     <?php if ($isAdmin): ?>
       <span class="soon" title="Coming soon">Reports</span>
-      <span class="soon" title="Coming soon">Users</span>
+      <a href="users.php"<?= $currentPage === 'users.php' ? ' aria-current="page"' : '' ?>>Users</a>
     <?php endif; ?>
+    <a href="change_password.php"<?= $currentPage === 'change_password.php' ? ' aria-current="page"' : '' ?>>Password</a>
   </nav>
   <div class="who">
     <span class="role <?= $isAdmin ? 'role-admin' : 'role-guard' ?>"><?= e(ROLE_LABELS[$topbarUser['role']] ?? '') ?></span>

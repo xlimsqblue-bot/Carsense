@@ -90,7 +90,7 @@ function current_user(): ?array {
         destroy_session();
         return null;
     }
-    $st = db()->prepare('SELECT id, username, full_name, role FROM users WHERE id = ? AND is_active');
+    $st = db()->prepare('SELECT id, username, full_name, role, must_change_password FROM users WHERE id = ? AND is_active');
     $st->execute([$_SESSION['uid']]);
     $user = $st->fetch();
     if (!$user) { destroy_session(); return null; }
@@ -108,6 +108,7 @@ function require_login(): array {
 /** Server-side role check. Hiding a link is not access control; this is. */
 function require_role(string ...$roles): array {
     $u = require_login();
+    if (db_bool($u['must_change_password'])) redirect('change_password.php');
     if (!in_array($u['role'], $roles, true)) {
         http_response_code(403);
         exit('You do not have permission to open this page.');

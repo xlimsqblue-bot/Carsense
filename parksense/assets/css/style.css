@@ -66,5 +66,21 @@ h1{margin:0 0 4px;font-size:28px;letter-spacing:.01em}
 .history-section table{width:100%;border-collapse:collapse;text-align:left}
 .history-section th,.history-section td{padding:10px;border-bottom:1px solid var(--edge);white-space:nowrap}
 .history-section th{color:var(--mute);font-size:13px}
+.account-forms{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:16px;margin-top:24px}
+.account-forms .slot-setup{margin:0}
+.account-form{display:grid;gap:12px}
+.account-form label{display:grid;gap:4px;font-weight:600}
+.account-form input:not([type=file]){width:100%;min-height:40px;padding:8px;border:1px solid var(--edge);border-radius:4px;background:var(--bg);color:var(--ink);font:inherit}
+.account-form input[type=file]{max-width:100%;font:inherit}
+.account-form .btn{width:auto;justify-self:start;margin:0;padding:9px 16px}
+.credential-notice{margin:18px 0;padding:18px;border:2px solid #24804a;border-radius:8px;background:var(--panel)}
+.credential-notice h2{margin:0 0 6px}
+.credential-notice p{margin:0 0 12px}
+.credential-notice code{font-size:14px;user-select:all}
+.login-help{margin:14px 0 0;text-align:center}
+.login-link{display:inline-block;margin-top:8px;font-weight:700}
+.inline-form{margin:0}
+.back-login-form{margin-top:10px}
+.back-login-button{background:transparent;color:var(--ink);border:2px solid var(--edge)}
 @media(max-width:700px){.count-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard{margin-top:22px}}
 @media(max-width:420px){.count-grid{grid-template-columns:1fr 1fr}.slot-create .btn{width:100%}}

@@ -7,9 +7,12 @@ CREATE TABLE IF NOT EXISTS public.users (
   password_hash VARCHAR(255) NOT NULL,                  -- bcrypt hash, never the password
   role          TEXT         NOT NULL DEFAULT 'guard' CHECK (role IN ('admin', 'guard')),
   is_active     BOOLEAN      NOT NULL DEFAULT TRUE,     -- set to false to disable an account instantly
+  must_change_password BOOLEAN NOT NULL DEFAULT FALSE,
   last_login_at TIMESTAMPTZ  NULL,
   created_at    TIMESTAMPTZ  NOT NULL DEFAULT NOW()
 );
+ALTER TABLE public.users
+  ADD COLUMN IF NOT EXISTS must_change_password BOOLEAN NOT NULL DEFAULT FALSE;
 
 CREATE TABLE IF NOT EXISTS public.login_attempts (
   id           BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
