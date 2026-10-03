@@ -1,11 +1,11 @@
-# ParkSense (login + top-bar dashboard)
+# ParkSense (login + parking monitor)
 
 Requires PHP 8.1 or newer with the `pdo_pgsql` extension, Apache (XAMPP works) and a Supabase project (the database).
 
 ## Setup (XAMPP on Windows + Supabase)
 1. Copy this folder to `C:\xampp\htdocs\parksense`.
 2. In `C:\xampp\php\php.ini` remove the `;` in front of `extension=pdo_pgsql`, then restart Apache.
-3. In Supabase open **SQL Editor -> New query**, paste `database/schema.sql` and click **Run**.
+3. In Supabase open **SQL Editor -> New query**, paste `database/schema.sql` and click **Run**. If you already set up the login system, run the updated schema again to create the parking slot and occupancy-history tables.
 4. In Supabase click **Connect** and open the **Session pooler** tab. Copy the host and user
    into `includes/config.php` (`DB_HOST`, `DB_USER`). Then save the database password with
    `php database/set_db_password.php` (it tests the password and writes `includes/config.local.php`,
@@ -21,6 +21,11 @@ Requires PHP 8.1 or newer with the `pdo_pgsql` extension, Apache (XAMPP works) a
 - `includes/`: config, database, sessions, login logic, CSRF, top bar. Blocked from browsers.
 - `database/`: `schema.sql` (run in Supabase) and the account-creation tool. Blocked from browsers.
 - `assets/css/`: styles.
+
+## Parking monitor (manual demo mode)
+- An administrator can add slots, assign zones, and update their status from the dashboard. Guards can view the board and recent status history.
+- Manual status changes are saved to `occupancy_logs`. Removed slots keep their history.
+- The dashboard clearly marks manual demo mode; it does not claim to receive live sensor data. ESP32 reporting, device health, alerts, and automatic refresh still need to be connected when the hardware is available.
 
 ## Security measures in this version
 | Risk | Protection |

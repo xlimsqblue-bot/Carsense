@@ -17,7 +17,7 @@ $topbarUser = $topbarUser ?? null;           // set on pages that show the top b
   <a class="brand" href="dashboard.php"><?= e(APP_NAME) ?></a>
   <nav aria-label="Main">
     <a href="dashboard.php" aria-current="page">Dashboard</a>
-    <span class="soon" title="Coming soon">Monitor</span>
+    <a href="dashboard.php#monitor">Monitor</a>
     <span class="soon" title="Coming soon">Alerts</span>
     <span class="soon" title="Coming soon">Records</span>
     <?php if ($isAdmin): ?>
